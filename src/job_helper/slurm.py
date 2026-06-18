@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 SQUEUE_FORMAT = "%i|%j|%q|%T|%D|%C|%M|%l|%R|%S"
 SINFO_FORMAT = "%P|%a|%D|%t|%C"
+SINFO_PARTITION_FORMAT = "%P"
 
 
 @dataclass(frozen=True)
@@ -48,3 +49,15 @@ def get_partition_rows(partition: str, *, runner=run_slurm_command) -> list[list
         for line in out.splitlines()
         if line.strip()
     ]
+
+
+def get_default_partition(*, runner=run_slurm_command) -> str | None:
+    out = runner(["sinfo", "-h", "-o", SINFO_PARTITION_FORMAT])
+    partitions = [line.strip() for line in out.splitlines() if line.strip()]
+    if not partitions:
+        return None
+
+    for partition in partitions:
+        if partition.endswith("*"):
+            return partition.rstrip("*")
+    return partitions[0].rstrip("*")

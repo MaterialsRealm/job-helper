@@ -2,6 +2,7 @@
 
 from datetime import datetime
 
+from job_helper.config import DEFAULT_PARTITION
 from job_helper.slurm import Job, get_jobs, get_partition_rows
 from job_helper.tables import aligned_table, natural_columns
 
@@ -97,7 +98,7 @@ def render_partition_table(partition: str, rows: list[list[str]]) -> str:
 
 def render_dashboard(
     user: str,
-    partition: str = "amd",
+    partition: str = DEFAULT_PARTITION,
     states: str = "PD,R",
     *,
     now: datetime | None = None,
