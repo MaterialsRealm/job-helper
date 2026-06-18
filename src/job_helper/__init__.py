@@ -1,2 +1,5 @@
-def main() -> None:
-    print("Hello from job-helper!")
+"""Helpers for local job and scheduler workflows."""
+
+__all__ = ["__version__"]
+
+__version__ = "0.1.0"
